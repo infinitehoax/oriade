@@ -15,32 +15,30 @@ import { Waveform } from './Waveform'
 
 interface Track {
   title: string
+  url: string
   duration: number
 }
+
+const GITHUB_RAW_BASE = 'https://github.com/infinitehoax/oriade/raw/refs/heads/main/'
+
+const TRACKS: Track[] = [
+  { title: 'Julie', url: 'Julie.mp4', duration: 0 },
+  { title: 'Already Falling', url: 'already-falling.mp4', duration: 0 },
+  { title: 'Amazing Grace', url: 'amazing grace.mp4', duration: 0 },
+  { title: 'B4B4', url: 'b4b4.mp4', duration: 0 },
+  { title: 'Constantly', url: 'constantly.mp4', duration: 0 },
+  { title: 'On the Road', url: 'on the road.mp4', duration: 0 },
+  { title: 'Tell Everybody', url: 'tell-everybody.mp4', duration: 0 },
+]
 
 export function MediaPlayer() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isAudioMode, setIsAudioMode] = useState(false)
   const [volume, setVolume] = useState(70)
   const [currentTime, setCurrentTime] = useState(0)
-  const [tracks, setTracks] = useState<Track[]>([])
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
-
-  useEffect(() => {
-    // Get video files from public folder
-    const videoFiles = [
-      { title: 'Julie', duration: 0 },
-      { title: 'Already Falling', duration: 0 },
-      { title: 'Amazing Grace', duration: 0 },
-      { title: 'B4B4', duration: 0 },
-      { title: 'Constantly', duration: 0 },
-      { title: 'On the Road', duration: 0 },
-      { title: 'Tell Everybody', duration: 0 },
-    ]
-    setTracks(videoFiles)
-  }, [])
 
   useEffect(() => {
     const media = isAudioMode ? audioRef.current : videoRef.current
@@ -71,8 +69,8 @@ export function MediaPlayer() {
     }
   }, [isAudioMode, isPlaying])
 
-  const currentTrack = tracks[currentTrackIndex]
-  const videoPath = `/Julie.mp4`
+  const currentTrack = TRACKS[currentTrackIndex]
+  const videoPath = currentTrack ? `${GITHUB_RAW_BASE}${encodeURI(currentTrack.url)}` : ''
   const progress = currentTrack ? (currentTime / (videoRef.current?.duration || 1)) * 100 : 0
 
   const handlePlayPause = () => {
@@ -287,7 +285,7 @@ export function MediaPlayer() {
             Playlist
           </h3>
           <div className="space-y-2 max-h-64 overflow-y-auto">
-            {tracks.map((track, idx) => (
+            {TRACKS.map((track, idx) => (
               <button
                 key={idx}
                 onClick={() => {
