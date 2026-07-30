@@ -162,6 +162,7 @@ export function MediaPlayer() {
                   ref={videoRef}
                   src={videoPath}
                   className="w-full h-full object-cover"
+                  crossOrigin="anonymous"
                   onVolumeChange={() => {}}
                 />
                 {!isPlaying && (
@@ -186,6 +187,7 @@ export function MediaPlayer() {
                 <audio
                   ref={audioRef}
                   src={videoPath}
+                  crossOrigin="anonymous"
                   onVolumeChange={() => {}}
                 />
               </div>
